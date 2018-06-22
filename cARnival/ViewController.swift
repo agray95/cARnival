@@ -87,6 +87,15 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let tapRecognizer = UITapGestureRecognizer(target: self, action:#selector(handleTap(rec:)))
         self.sceneView.addGestureRecognizer(tapRecognizer)
         
+//        Add swipe handler
+//        let swipeRecognizer = UISwipeGestureRecognizer(target: self, action:#selector(handleSwipe(rec:)))
+//        swipeRecognizer.direction = [.up]
+//        self.sceneView.addGestureRecognizer(swipeRecognizer)
+        
+//        Add pan handler (hehe)
+        let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(rec:)))
+        self.sceneView.addGestureRecognizer(panRecognizer)
+        
         // Set the view's delegate to appropriate controller for handling anchors
         switch self.currentGameState {
             case GameState.Browse:
@@ -146,6 +155,26 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 break
         }
         
+    }
+    
+    @objc func handleSwipe(rec: UISwipeGestureRecognizer) {
+        print(rec)
+        
+        switch self.currentGameState {
+            case GameState.Browse:
+                self.browseController.handleSwipe()
+                break
+            case GameState.Play:
+                self.playController.handleSwipe()
+                break
+        }
+    }
+    
+    @objc func handlePan(rec: UIPanGestureRecognizer) {
+        print(rec)
+        print(rec.translation(in: self.sceneView))
+        print(rec.velocity(in: self.sceneView))
+        print("----------")
     }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

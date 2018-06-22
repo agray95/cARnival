@@ -63,6 +63,10 @@ class PlayController: UIViewController, ARSCNViewDelegate {
         print("Tapping in Play mode!")
         disablePlaneDetection()
     }
+    
+    func handleSwipe() {
+        
+    }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //~~~~TRACKING HANDLERS~~~~~~~~~~~~~~~~~
