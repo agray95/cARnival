@@ -13,6 +13,8 @@
 		A7E2C8A320DC368B003AF21E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7E2C8A120DC368B003AF21E /* Main.storyboard */; };
 		A7E2C8A520DC368C003AF21E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7E2C8A420DC368C003AF21E /* Assets.xcassets */; };
 		A7E2C8A820DC368C003AF21E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7E2C8A620DC368C003AF21E /* LaunchScreen.storyboard */; };
+		A7E2C8B020DC3BAE003AF21E /* BrowseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E2C8AF20DC3BAE003AF21E /* BrowseController.swift */; };
+		A7E2C8B220DC3C10003AF21E /* PlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E2C8B120DC3C10003AF21E /* PlayController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		A7E2C8A420DC368C003AF21E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A7E2C8A720DC368C003AF21E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A7E2C8A920DC368C003AF21E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A7E2C8AF20DC3BAE003AF21E /* BrowseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseController.swift; sourceTree = "<group>"; };
+		A7E2C8B120DC3C10003AF21E /* PlayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,11 +61,13 @@
 			isa = PBXGroup;
 			children = (
 				A7E2C89B20DC368B003AF21E /* AppDelegate.swift */,
-				A7E2C89D20DC368B003AF21E /* art.scnassets */,
 				A7E2C89F20DC368B003AF21E /* ViewController.swift */,
+				A7E2C8AF20DC3BAE003AF21E /* BrowseController.swift */,
+				A7E2C8B120DC3C10003AF21E /* PlayController.swift */,
 				A7E2C8A120DC368B003AF21E /* Main.storyboard */,
 				A7E2C8A420DC368C003AF21E /* Assets.xcassets */,
 				A7E2C8A620DC368C003AF21E /* LaunchScreen.storyboard */,
+				A7E2C89D20DC368B003AF21E /* art.scnassets */,
 				A7E2C8A920DC368C003AF21E /* Info.plist */,
 			);
 			path = cARnival;
@@ -139,6 +145,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7E2C8B020DC3BAE003AF21E /* BrowseController.swift in Sources */,
+				A7E2C8B220DC3C10003AF21E /* PlayController.swift in Sources */,
 				A7E2C8A020DC368B003AF21E /* ViewController.swift in Sources */,
 				A7E2C89C20DC368B003AF21E /* AppDelegate.swift in Sources */,
 			);

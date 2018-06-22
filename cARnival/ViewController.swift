@@ -12,32 +12,95 @@ import ARKit
 
 class ViewController: UIViewController, ARSCNViewDelegate {
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~GAME STATE~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    enum GameState {
+        case Browse
+        case Play
+    }
+
+    var currentGameState: GameState = GameState.Browse
+    
+    func enableBrowseState(withTracking: Bool = true) {
+        print("Enabling BROWSE state")
+        
+        if withTracking {
+            self.browseController.enableTracking()
+        }
+        
+        self.currentGameState = GameState.Browse
+        self.sceneView.delegate = self.browseController
+    }
+    
+    func enablePlayState(withTracking: Bool = true) {
+        print("Enabling PLAY state")
+        
+        if withTracking {
+            self.playController.enableTracking()
+        }
+        
+        self.currentGameState = GameState.Play
+        self.sceneView.delegate = self.playController
+    }
+    
+    func toggleGameState() {
+        self.currentGameState = self.currentGameState == GameState.Play ? GameState.Browse : GameState.Play
+        
+        switch self.currentGameState {
+            case GameState.Browse:
+                self.enableBrowseState()
+                break
+            case GameState.Play:
+                self.enablePlayState()
+                break
+        }
+    }
+    
+    func prepareGameForActivation(posterAnchor: ARAnchor, postersize: CGSize){
+        enablePlayState()
+        self.playController.spawnActivationPlane(anchor: posterAnchor, posterSize: postersize)
+    }
+    
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~SESSION HANDLING~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     @IBOutlet var sceneView: ARSCNView!
+    
+    let browseController: BrowseController = BrowseController()
+    let playController: PlayController = PlayController()
+    
+    let planeDetectionTypes: ARWorldTrackingConfiguration.PlaneDetection = [.vertical]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Set the view's delegate
-        sceneView.delegate = self
+//        Inject sceneView into controllers
+        browseController.sceneView = self.sceneView
+        playController.sceneView = self.sceneView
         
-        // Show statistics such as fps and timing information
-        sceneView.showsStatistics = true
+        browseController.viewController = self
+        playController.viewController = self
         
-        // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
+//        Add tap handler
+        let tapRecognizer = UITapGestureRecognizer(target: self, action:#selector(handleTap(rec:)))
+        self.sceneView.addGestureRecognizer(tapRecognizer)
         
-        // Set the scene to the view
-        sceneView.scene = scene
+        // Set the view's delegate to appropriate controller for handling anchors
+        switch self.currentGameState {
+            case GameState.Browse:
+                self.enableBrowseState()
+                break
+            case GameState.Play:
+                self.enablePlayState()
+                break
+        }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // Create a session configuration
-        let configuration = ARWorldTrackingConfiguration()
-
-        // Run the view's session
-        sceneView.session.run(configuration)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -46,17 +109,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Pause the view's session
         sceneView.session.pause()
     }
-
-    // MARK: - ARSCNViewDelegate
-    
-/*
-    // Override to create and configure nodes for anchors added to the view's session.
-    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        let node = SCNNode()
-     
-        return node
-    }
-*/
     
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
@@ -72,4 +124,38 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Reset tracking and/or remove existing anchors if consistent tracking is required
         
     }
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~INPUT HANDLING~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+    @objc func handleTap(rec: UITapGestureRecognizer) {
+        if rec.state != .ended {
+            return
+        }
+        
+//        *******TESTING*******
+//        toggleGameState()
+        
+        switch self.currentGameState {
+            case GameState.Browse:
+                self.browseController.handleTap(rec.location(in: self.sceneView))
+                break
+            case GameState.Play:
+                self.playController.handleTap(rec.location(in: self.sceneView))
+                break
+        }
+        
+    }
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~ANCHOR MGMT~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+    var anchors: [ARAnchor] = [ARAnchor]()
+    
+    func addAnchor(_ anchor: ARAnchor) {
+        self.anchors.append(anchor)
+    }
+
 }
